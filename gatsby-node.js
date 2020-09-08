@@ -9,7 +9,9 @@ const getTemplates = () => {
   return glob.sync(`./src/templates/**/*.js`, { cwd: sitePath });
 };
 
-exports.createPages = async ({ actions, graphql, reporter }) => {
+exports.createPages = async ({ actions, graphql, reporter }, pluginOptions) => {
+  console.log({ pluginOptions });
+
   const templates = getTemplates();
 
   const {

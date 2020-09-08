@@ -54,7 +54,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       );
 
       if (!contentTypeTemplate) {
-        dd(node);
+        // dd(node);
         reporter.log(``);
         reporter.log(``);
         reporter.panic(
@@ -65,6 +65,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           }\n\nAvailable templates:\n${contentTypeTemplates.join(`\n`)}`
         );
       }
+
+      // todo: add support for custom templates
 
       //   await actions.createPage({
       //     component: resolve(contentTypeTemplate),

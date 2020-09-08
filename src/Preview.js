@@ -1,18 +1,18 @@
-import React from "react"
-import styled from "styled-components"
-import { BounceLoader } from "react-spinners"
+import React from "react";
+import styled from "styled-components";
+import { BounceLoader } from "react-spinners";
 
-import useQuery from "./useQuery"
+import useQuery from "./useQuery";
 
 export default (props) => {
-  const { element, pageProps } = props
-  const { pageContext } = pageProps
+  const { element, pageProps } = props;
+  const { pageContext } = pageProps;
 
-  const params = new URLSearchParams(pageProps?.location?.search)
-  const postId = params.get("id")
-  const jwtAuthKey = params.get("key")
+  const params = new URLSearchParams(pageProps?.location?.search);
+  const postId = params.get("id");
+  const jwtAuthKey = params.get("key");
 
-  const { wpUrl, id, query } = pageContext || {}
+  const { wpUrl, id, query } = pageContext || {};
   // console.log({ id })
   // console.log({ postId })
   // console.log({ jwtAuthKey })
@@ -28,28 +28,34 @@ export default (props) => {
     variables: { id: postId },
     query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },
-  })
+  });
 
-  !called && executeQuery()
+  !called && executeQuery();
 
-  console.log({ data })
+  // console.log({ data });
 
   if (loading) {
     return (
       <LoaderContainer>
         <BounceLoader />
       </LoaderContainer>
-    )
-  } else {
+    );
+  } else if (data && !error) {
     return React.Children.map(element, (child) =>
       React.cloneElement(child, { data: data?.data })
-    )
+    );
+  } else if (error) {
+    return (
+      <LoaderContainer>Something went wrong. Please try again.</LoaderContainer>
+    );
+  } else {
+    return null;
   }
-}
+};
 
 const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-`
+`;

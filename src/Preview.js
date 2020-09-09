@@ -32,8 +32,6 @@ export default (props) => {
 
   !called && executeQuery();
 
-  // console.log({ data });
-
   if (loading) {
     return (
       <LoaderContainer>

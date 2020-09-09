@@ -23,6 +23,9 @@ export default (props) => {
 
   !called && executeQuery();
 
+  console.log({ pageContext });
+  console.log({ error, data, called, loading });
+
   if (loading) {
     return (
       <LoaderContainer>
@@ -35,7 +38,10 @@ export default (props) => {
     );
   } else if (error) {
     return (
-      <LoaderContainer>Something went wrong. Please try again.</LoaderContainer>
+      <LoaderContainer>
+        <div>Something went wrong. Please try again.</div>
+        <div>{error?.errors && error?.errors.map((item) => item.message)}</div>
+      </LoaderContainer>
     );
   } else {
     return null;
@@ -46,5 +52,9 @@ const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  height: 80vh;
+  > div {
+    margin: 15px 0;
+  }
 `;

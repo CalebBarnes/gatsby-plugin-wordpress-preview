@@ -38,11 +38,7 @@ export const useQuery = ({
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log({ result });
-
         if (result?.errors) {
-          console.log("this is an error");
-
           setState({
             ...state,
             loading: false,

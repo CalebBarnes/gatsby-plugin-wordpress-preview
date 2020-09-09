@@ -13,18 +13,9 @@ export default (props) => {
   const jwtAuthKey = params.get("key");
 
   const { wpUrl, id, query } = pageContext || {};
-  // console.log({ id })
-  // console.log({ postId })
-  // console.log({ jwtAuthKey })
-
-  // console.log({ query })
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
-    // url: `${wpUrl}/graphql`,
-    url: `${
-      process.env.GATSBY_WPGRAPHQL_URL ||
-      `https://wpgatsbydemo1.wpengine.com/graphql`
-    }`,
+    url: `${process.env.GATSBY_WPGRAPHQL_URL || `${wpUrl}/graphql`}`,
     variables: { id: postId },
     query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },

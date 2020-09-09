@@ -7,6 +7,7 @@ const helpers = require(`gatsby-source-wordpress-experimental/steps/source-nodes
 exports.createPages = async (
   { actions, graphql, reporter },
   {
+    graphqlEndpoint,
     debug = false,
     excludedTemplates = [],
     templatesPath = `./src/templates/**/*.js`,
@@ -29,7 +30,6 @@ exports.createPages = async (
     query ALL_CONTENT_NODES {
       wp {
         generalSettings {
-          title
           url
         }
       }
@@ -82,7 +82,9 @@ exports.createPages = async (
           component: resolve(contentTypeTemplate),
           path: `/preview/types/${graphqlSingleName}`,
           context: {
-            wpUrl: generalSettings.url,
+            graphqlEndpoint:
+              graphqlEndpoint || `${generalSettings.url}/graphql`,
+            // wpUrl: generalSettings.url,
             preview: true,
             id: `${graphqlSingleName}-preview-id`,
             query,

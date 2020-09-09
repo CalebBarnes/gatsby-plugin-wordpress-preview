@@ -12,10 +12,10 @@ export default (props) => {
   const postId = params.get("id");
   const jwtAuthKey = params.get("key");
 
-  const { wpUrl, id, query } = pageContext || {};
+  const { graphqlEndpoint, id, query } = pageContext || {};
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
-    url: `${process.env.GATSBY_WPGRAPHQL_URL || `${wpUrl}/graphql`}`,
+    url: graphqlEndpoint,
     variables: { id: postId },
     query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },

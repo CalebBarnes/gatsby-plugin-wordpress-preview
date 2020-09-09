@@ -76,13 +76,15 @@ exports.createPages = async (
         const { nodeQuery: query } =
           helpers.getQueryInfoBySingleFieldName(graphqlSingleName) || {};
 
+        debug && console.log({ query });
+
         actions.createPage({
           component: resolve(contentTypeTemplate),
           path: `/preview/types/${graphqlSingleName}`,
           context: {
             wpUrl: generalSettings.url,
             preview: true,
-            id: `${graphqlSingleName}-preview-page-id`,
+            id: `${graphqlSingleName}-preview-id`,
             query,
           },
         });

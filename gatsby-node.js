@@ -84,7 +84,6 @@ exports.createPages = async (
           context: {
             graphqlEndpoint:
               graphqlEndpoint || `${generalSettings.url}/graphql`,
-            // wpUrl: generalSettings.url,
             preview: true,
             id: `${graphqlSingleName}-preview-id`,
             query,

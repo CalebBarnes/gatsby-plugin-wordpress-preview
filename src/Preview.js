@@ -48,13 +48,18 @@ export default (props) => {
   }
 };
 
-const LoaderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 80vh;
-  > div {
-    margin: 15px 0;
-  }
-`;
+const LoaderContainer = (props) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      height: "80vh",
+      "> div": {
+        margin: "15px 0",
+      },
+    }}
+    {...props}
+  />
+);

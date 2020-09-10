@@ -56,6 +56,23 @@ exports.createPages = async (
             `${graphqlSingleName} is excluded. Not creating preview page.`
           );
       } else {
+        const nodeTypeName = `${graphqlSingleName
+          .charAt(0)
+          .toUpperCase()}${graphqlSingleName.slice(1)}`;
+
+        // dummy data to use while creating the preview template pages
+        // this should prevent errors while destructuring data in page templates
+        const { data: dummyData } = await graphql(/* GraphQL */ `
+        {
+          wp${nodeTypeName} {
+            id
+          }
+        }
+      `);
+
+        console.log(`dummyData`);
+        console.log(dummyData[`wp${nodeTypeName}`]);
+
         const templatePath = `${contentTypeTemplateDirectory}${graphqlSingleName}.js`;
 
         const contentTypeTemplate = contentTypeTemplates.find(
@@ -85,7 +102,7 @@ exports.createPages = async (
             graphqlEndpoint:
               graphqlEndpoint || `${generalSettings.url}/graphql`,
             preview: true,
-            id: `${graphqlSingleName}-preview-id`,
+            id: dummyData[`wp${nodeTypeName}`].id,
             query,
           },
         });

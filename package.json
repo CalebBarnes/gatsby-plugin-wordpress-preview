@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-wordpress-preview",
   "license": "MIT",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Caleb Barnes <caleb.d.barnes@gmail.com>",
   "repository": "https://github.com/CalebBarnes/gatsby-plugin-wordpress-preview.git",
   "dependencies": {

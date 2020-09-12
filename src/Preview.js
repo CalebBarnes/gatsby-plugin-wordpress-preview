@@ -1,10 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import { BounceLoader } from "react-spinners";
 
 import useQuery from "./useQuery";
 
-export default (props) => {
+export const Preview = (props) => {
   const { element, pageProps } = props;
   const { pageContext } = pageProps;
 
@@ -12,7 +11,7 @@ export default (props) => {
   const postId = params.get("id");
   const jwtAuthKey = params.get("key");
 
-  const { graphqlEndpoint, id, query } = pageContext || {};
+  const { graphqlEndpoint, query, debug } = pageContext || {};
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
     url: graphqlEndpoint,
@@ -23,10 +22,11 @@ export default (props) => {
 
   !called && executeQuery();
 
-  console.log({ pageContext });
-  console.log({ error, data, called, loading });
+  debug && console.log("Preview.js", { postId, jwtAuthKey });
+  debug && console.log("Preview.js", { postId, jwtAuthKey });
+  debug && console.log("Preview.js", { error, data, called, loading });
 
-  if (loading) {
+  if (loading || typeof window === `undefined`) {
     return (
       <LoaderContainer>
         <BounceLoader />
@@ -40,7 +40,7 @@ export default (props) => {
     return (
       <LoaderContainer>
         <div>Something went wrong. Please try again.</div>
-        <div>{error?.errors && error?.errors.map((item) => item.message)}</div>
+        <div>{error?.errors && error.errors.map(({ message }) => message)}</div>
       </LoaderContainer>
     );
   } else {
@@ -63,3 +63,5 @@ const LoaderContainer = (props) => (
     {...props}
   />
 );
+
+export default Preview;

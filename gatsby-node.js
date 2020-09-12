@@ -52,8 +52,8 @@ exports.createPages = async (
 
       if (excludedTemplates.includes(graphqlSingleName)) {
         debug &&
-          console.log(
-            `${graphqlSingleName} is excluded. Not creating preview page.`
+          reporter.log(
+            `[gatsby-plugin-wordpress-preview] ${graphqlSingleName} is excluded. Not creating preview page.`
           );
       } else {
         const nodeTypeName = `${graphqlSingleName
@@ -70,9 +70,6 @@ exports.createPages = async (
         }
       `);
 
-        console.log(`dummyData`);
-        console.log(dummyData[`wp${nodeTypeName}`]);
-
         const templatePath = `${contentTypeTemplateDirectory}${graphqlSingleName}.js`;
 
         const contentTypeTemplate = contentTypeTemplates.find(
@@ -80,32 +77,35 @@ exports.createPages = async (
         );
 
         if (!contentTypeTemplate) {
-          reporter.log(``);
-          reporter.log(``);
-          reporter.panic(
-            `[gatsby-plugin-wordpress-preview] No template found at ${templatePath}\nfor single ${graphqlSingleName}
-          \n\nAvailable templates:\n${contentTypeTemplates.join(`\n`)}`
-          );
+          if (debug) {
+            reporter.log(``);
+            reporter.log(``);
+            reporter.log(
+              `[gatsby-plugin-wordpress-preview] No template found at ${templatePath}\nfor single ${graphqlSingleName}
+              \n\nAvailable templates:\n${contentTypeTemplates.join(`\n`)}`
+            );
+          }
+        } else {
+          // todo: add support for custom templates and archive pages
+
+          const { nodeQuery: query } =
+            helpers.getQueryInfoBySingleFieldName(graphqlSingleName) || {};
+
+          debug && reporter.log(`[gatsby-plugin-wordpress-preview]`, { query });
+
+          actions.createPage({
+            component: resolve(contentTypeTemplate),
+            path: `/preview/types/${graphqlSingleName}`,
+            context: {
+              graphqlEndpoint:
+                graphqlEndpoint || `${generalSettings.url}/graphql`,
+              preview: true,
+              id: dummyData[`wp${nodeTypeName}`].id,
+              query,
+              debug,
+            },
+          });
         }
-
-        // todo: add support for custom templates and archive pages
-
-        const { nodeQuery: query } =
-          helpers.getQueryInfoBySingleFieldName(graphqlSingleName) || {};
-
-        debug && console.log({ query });
-
-        actions.createPage({
-          component: resolve(contentTypeTemplate),
-          path: `/preview/types/${graphqlSingleName}`,
-          context: {
-            graphqlEndpoint:
-              graphqlEndpoint || `${generalSettings.url}/graphql`,
-            preview: true,
-            id: dummyData[`wp${nodeTypeName}`].id,
-            query,
-          },
-        });
       }
     })
   );

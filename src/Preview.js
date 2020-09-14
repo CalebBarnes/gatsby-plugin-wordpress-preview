@@ -13,6 +13,10 @@ export const Preview = (props) => {
 
   const { graphqlEndpoint, query, debug } = pageContext || {};
 
+  const debugLog = (message) => {
+    debug && console.log(`[gatsby-plugin-wordpress-preview] ${message}`);
+  };
+
   const [executeQuery, { error, data, called, loading }] = useQuery({
     url: graphqlEndpoint,
     variables: { id: postId },
@@ -22,9 +26,14 @@ export const Preview = (props) => {
 
   !called && executeQuery();
 
-  debug && console.log("Preview.js", { postId, jwtAuthKey });
-  debug && console.log("Preview.js", { postId, jwtAuthKey });
-  debug && console.log("Preview.js", { error, data, called, loading });
+  debugLog({ postId, jwtAuthKey });
+
+  debugLog({
+    error,
+    data,
+    called,
+    loading,
+  });
 
   if (loading || typeof window === `undefined`) {
     return (
@@ -39,12 +48,17 @@ export const Preview = (props) => {
   } else if (error) {
     return (
       <LoaderContainer>
-        <div>Something went wrong. Please try again.</div>
-        <div>{error?.errors && error.errors.map(({ message }) => message)}</div>
+        <p>Something went wrong. Please try again.</p>
+        <p>{error?.errors && error.errors.map(({ message }) => message)}</p>
       </LoaderContainer>
     );
   } else {
-    return null;
+    return (
+      <LoaderContainer>
+        <p>Something went wrong. Please try again.</p>
+        <p>{error?.errors && error.errors.map(({ message }) => message)}</p>
+      </LoaderContainer>
+    );
   }
 };
 

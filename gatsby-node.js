@@ -14,6 +14,10 @@ exports.createPages = async (
     contentTypeTemplateDirectory = `./src/templates/single/`,
   } // pluginOptions
 ) => {
+  const debugLog = (message) => {
+    debug && reporter.log(`[gatsby-plugin-wordpress-preview] ${message}`);
+  };
+
   const getTemplates = () => {
     const sitePath = path.resolve(`./`);
     return glob.sync(templatesPath, { cwd: sitePath });
@@ -51,10 +55,9 @@ exports.createPages = async (
       const { graphqlSingleName } = node;
 
       if (excludedTemplates.includes(graphqlSingleName)) {
-        debug &&
-          reporter.log(
-            `[gatsby-plugin-wordpress-preview] ${graphqlSingleName} is excluded. Not creating preview page.`
-          );
+        debugLog(
+          `${graphqlSingleName} is excluded. Not creating preview page.`
+        );
       } else {
         const nodeTypeName = `${graphqlSingleName
           .charAt(0)
@@ -77,21 +80,16 @@ exports.createPages = async (
         );
 
         if (!contentTypeTemplate) {
-          if (debug) {
-            reporter.log(``);
-            reporter.log(``);
-            reporter.log(
-              `[gatsby-plugin-wordpress-preview] No template found at ${templatePath}\nfor single ${graphqlSingleName}
-              \n\nAvailable templates:\n${contentTypeTemplates.join(`\n`)}`
-            );
-          }
+          debugLog(
+            `No template found for single ${graphqlSingleName} in ${templatePath} \nNot creating preview page.\n`
+          );
         } else {
           // todo: add support for custom templates and archive pages
 
           const { nodeQuery: query } =
             helpers.getQueryInfoBySingleFieldName(graphqlSingleName) || {};
 
-          debug && reporter.log(`[gatsby-plugin-wordpress-preview]`, { query });
+          debugLog(query);
 
           actions.createPage({
             component: resolve(contentTypeTemplate),

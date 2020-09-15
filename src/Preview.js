@@ -4,7 +4,7 @@ import { BounceLoader } from "react-spinners";
 import useQuery from "./useQuery";
 
 export const Preview = (props) => {
-  const { element, pageProps } = props;
+  const { element, pageProps, placeholder } = props;
   const { pageContext } = pageProps;
 
   const params = new URLSearchParams(pageProps?.location?.search);
@@ -35,7 +35,7 @@ export const Preview = (props) => {
     loading,
   });
 
-  if (loading || typeof window === `undefined`) {
+  if (loading || placeholder || typeof window === `undefined`) {
     return (
       <LoaderContainer>
         <BounceLoader />

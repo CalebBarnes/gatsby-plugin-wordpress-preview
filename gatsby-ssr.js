@@ -5,7 +5,7 @@ export const wrapPageElement = ({ element, props }) => {
   const { pageContext } = props;
 
   if (!!pageContext.preview) {
-    return <Preview pageProps={props} element={element} />;
+    return <Preview pageProps={props} element={element} placeholder />;
   } else {
     return element;
   }

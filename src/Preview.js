@@ -13,16 +13,17 @@ export const Preview = (props) => {
   const postId = params.get("id");
   const jwtAuthKey = params.get("key");
 
-  const { query, debug, previewOptions } = pageContext || {};
+  const { query, previewOptions } = pageContext || {};
 
   const debugLog = (message) => {
-    debug && console.log(`[gatsby-plugin-wordpress-preview] `, message);
+    previewOptions.debug &&
+      console.log(`[gatsby-plugin-wordpress-preview] `, message);
   };
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
     url: previewOptions.graphqlEndpoint,
     variables: { id: postId },
-    query: previewOptions?.convertMediaItems ? modifyQuery(query) : query,
+    query: previewOptions?.processMediaItems ? modifyQuery(query) : query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },
   });
 

@@ -12,6 +12,7 @@ exports.createPages = async (
     excludedTemplates = [],
     templatesPath = `./src/templates/**/*.js`,
     contentTypeTemplateDirectory = `./src/templates/single/`,
+    processMediaItems = true,
   } // pluginOptions
 ) => {
   const debugLog = (message) => {
@@ -95,12 +96,15 @@ exports.createPages = async (
             component: resolve(contentTypeTemplate),
             path: `/preview/types/${graphqlSingleName}`,
             context: {
-              graphqlEndpoint:
-                graphqlEndpoint || `${generalSettings.url}/graphql`,
               preview: true,
               id: dummyData[`wp${nodeTypeName}`].id,
               query,
-              debug,
+              previewOptions: {
+                debug,
+                processMediaItems,
+                graphqlEndpoint:
+                  graphqlEndpoint || `${generalSettings.url}/graphql`,
+              },
             },
           });
         }

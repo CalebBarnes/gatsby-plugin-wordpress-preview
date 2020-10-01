@@ -2,6 +2,8 @@ import React from "react";
 import { BounceLoader } from "react-spinners";
 
 import useQuery from "./useQuery";
+import modifyQuery from "./modifyQuery";
+import processMediaItemNodes from "./processMediaItemNodes";
 
 export const Preview = (props) => {
   const { element, pageProps, placeholder } = props;
@@ -11,22 +13,23 @@ export const Preview = (props) => {
   const postId = params.get("id");
   const jwtAuthKey = params.get("key");
 
-  const { graphqlEndpoint, query, debug } = pageContext || {};
+  const { query, debug, previewOptions } = pageContext || {};
 
   const debugLog = (message) => {
-    debug && console.log(`[gatsby-plugin-wordpress-preview] ${message}`);
+    debug && console.log(`[gatsby-plugin-wordpress-preview] `, message);
   };
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
-    url: graphqlEndpoint,
+    url: previewOptions.graphqlEndpoint,
     variables: { id: postId },
-    query,
+    query: previewOptions?.convertMediaItems ? modifyQuery(query) : query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },
   });
 
   !called && executeQuery();
 
   debugLog({ postId, jwtAuthKey });
+  debugLog({ previewOptions });
 
   debugLog({
     error,
@@ -34,6 +37,10 @@ export const Preview = (props) => {
     called,
     loading,
   });
+
+  if (data && previewOptions?.processMediaItems) {
+    processMediaItemNodes(data);
+  }
 
   if (loading || placeholder || typeof window === `undefined`) {
     return (

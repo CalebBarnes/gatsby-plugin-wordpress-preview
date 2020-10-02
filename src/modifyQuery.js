@@ -11,7 +11,6 @@ export default function modifyQuery(query) {
             obj.typeCondition.name.value === "MediaItem"
           ) {
             // we shouldn't iterate this object because we added it! infinite loops are bad
-            console.log({ obj });
           } else {
             iterate(obj[key], callback);
           }

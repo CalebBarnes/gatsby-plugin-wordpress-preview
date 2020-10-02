@@ -4,30 +4,39 @@ export default function processMediaItemNodes(data) {
   iterate(data, (obj, key) => {
     if (
       key === "sourceUrl" &&
+      obj &&
+      obj[key] &&
       obj[key].startsWith("http") &&
       obj.__typename === "MediaItem"
     ) {
-      const localFile = {
-        childImageSharp: {
-          fluid: {
-            aspectRatio: 1,
-            base64: "",
-            sizes: "",
-            src: obj[key],
-            srcSet: "",
-          },
-          fixed: {
-            aspectRatio: 1,
-            base64: "",
-            sizes: "",
-            src: obj[key],
-            srcSet: "",
-          },
-        },
-      };
+      const { mediaType, mediaDetails, srcSet } = obj;
 
-      obj.localFile = localFile;
-      obj.remoteFile = localFile;
+      if (mediaType === "image") {
+        const { width, height } = mediaDetails;
+        const aspectRatio = width / height;
+
+        const localFile = {
+          childImageSharp: {
+            fluid: {
+              aspectRatio,
+              base64: "",
+              sizes: "",
+              src: obj[key],
+              srcSet,
+            },
+            fixed: {
+              aspectRatio,
+              base64: "",
+              sizes: "",
+              src: obj[key],
+              srcSet,
+            },
+          },
+        };
+
+        obj.localFile = localFile;
+        obj.remoteFile = localFile;
+      }
     }
   });
 

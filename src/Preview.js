@@ -39,9 +39,8 @@ export const Preview = (props) => {
     loading,
   });
 
-  if (data && previewOptions?.processMediaItems) {
-    processMediaItemNodes(data);
-  }
+  const previewData =
+    previewOptions?.processMediaItems && data && processMediaItemNodes(data);
 
   if (loading || placeholder || typeof window === `undefined`) {
     return (
@@ -49,9 +48,9 @@ export const Preview = (props) => {
         <BounceLoader />
       </LoaderContainer>
     );
-  } else if (data && !error) {
+  } else if (previewData && !error) {
     return React.Children.map(element, (child) =>
-      React.cloneElement(child, { data: data?.data })
+      React.cloneElement(child, { data: previewData?.data || data?.data })
     );
   } else if (error) {
     return (

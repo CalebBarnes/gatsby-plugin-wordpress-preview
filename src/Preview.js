@@ -20,10 +20,13 @@ export const Preview = (props) => {
       console.log(`[gatsby-plugin-wordpress-preview] `, message);
   };
 
+  const previewQuery = previewOptions?.processMediaItems && modifyQuery(query);
+  previewQuery && debugLog(previewQuery);
+
   const [executeQuery, { error, data, called, loading }] = useQuery({
     url: previewOptions.graphqlEndpoint,
     variables: { id: postId },
-    query: previewOptions?.processMediaItems ? modifyQuery(query) : query,
+    query: previewOptions?.processMediaItems ? previewQuery : query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },
   });
 

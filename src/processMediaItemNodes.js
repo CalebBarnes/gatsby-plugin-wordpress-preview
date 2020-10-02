@@ -24,13 +24,6 @@ export default function processMediaItemNodes(data) {
               src: obj[key],
               srcSet,
             },
-            fixed: {
-              aspectRatio,
-              base64: "",
-              sizes: "",
-              src: obj[key],
-              srcSet,
-            },
           },
         };
 

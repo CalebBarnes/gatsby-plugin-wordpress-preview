@@ -85,6 +85,9 @@ exports.createPages = async (
             `No template found for single ${graphqlSingleName} in ${templatePath} \nNot creating preview page.\n`
           );
         } else {
+          debugLog(
+            `Creating preview page for single ${graphqlSingleName} using ${contentTypeTemplate}`
+          );
           // todo: add support for custom templates and archive pages
 
           const { nodeQuery: query } =

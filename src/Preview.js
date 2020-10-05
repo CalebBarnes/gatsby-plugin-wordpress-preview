@@ -24,7 +24,7 @@ export const Preview = (props) => {
   previewQuery && debugLog(previewQuery);
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
-    url: previewOptions.graphqlEndpoint,
+    url: previewOptions?.graphqlEndpoint,
     variables: { id: postId },
     query: previewOptions?.processMediaItems ? previewQuery : query,
     headers: { Authorization: `Bearer ${jwtAuthKey}` },

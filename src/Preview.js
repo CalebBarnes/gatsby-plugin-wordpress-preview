@@ -16,7 +16,7 @@ export const Preview = (props) => {
   const { query, previewOptions } = pageContext || {};
 
   const debugLog = (message) => {
-    previewOptions.debug &&
+    previewOptions?.debug &&
       console.log(`[gatsby-plugin-wordpress-preview] `, message);
   };
 

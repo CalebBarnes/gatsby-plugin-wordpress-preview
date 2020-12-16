@@ -2,7 +2,7 @@ const { resolve } = require(`path`);
 const path = require(`path`);
 const glob = require(`glob`);
 
-const helpers = require(`gatsby-source-wordpress-experimental/steps/source-nodes/helpers`);
+const helpers = require(`gatsby-source-wordpress-experimental/dist/steps/source-nodes/helpers`);
 
 exports.createPages = async (
   { actions, graphql, reporter },

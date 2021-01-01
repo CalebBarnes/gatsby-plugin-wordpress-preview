@@ -34,7 +34,10 @@ export default function modifyQuery(query) {
         }
       }
     }
-  `.definitions[0].selectionSet.selections[0];
+  `;
+
+  const mediaItemFields =
+    mediaItemFragment?.definitions?.[0]?.selectionSet?.selections?.[0];
 
   // this adds __typename and the MediaItem fragment to all fields with the 'sourceUrl' field
   // we need this to determine the type before we process the data
@@ -69,7 +72,7 @@ export default function modifyQuery(query) {
             kind: "Field",
             name: { kind: "Name", value: "__typename" },
           },
-          mediaItemFragment
+          mediaItemFields
         );
       }
     }

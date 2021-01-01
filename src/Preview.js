@@ -20,7 +20,8 @@ export const Preview = (props) => {
       console.log(`[gatsby-plugin-wordpress-preview] `, message);
   };
 
-  const previewQuery = previewOptions?.processMediaItems && modifyQuery(query);
+  const previewQuery =
+    previewOptions?.processMediaItems && query && modifyQuery(query);
   previewQuery && debugLog(previewQuery);
 
   const [executeQuery, { error, data, called, loading }] = useQuery({
@@ -31,7 +32,7 @@ export const Preview = (props) => {
   });
 
   !called && executeQuery();
-
+  debugLog({ query });
   debugLog({ postId, jwtAuthKey });
   debugLog({ previewOptions });
 
